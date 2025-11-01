@@ -1,6 +1,7 @@
 services:
   - type: web
     name: movie_chatbot
+    pythonVersion: 3.12.6
     env: python
     buildCommand: "pip install -r requirements.txt"
     startCommand: "gunicorn app:app"
