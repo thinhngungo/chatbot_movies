@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: movie_chatbot
+    env: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn app:app"
+    envVars:
+      - key: DATABASE_URL
+        value: postgres://avnadmin:AVNS_XhP3mzYei52k9niIFCv@vietnammovie-neww-voice.c.aivencloud.com:28511/defaultdb?sslmode=require
+      - key: GEMINI_API
+        value: AIzaSyDGMH4A7-eDKc_8C9edrvDXTgMfSIgkYOA
