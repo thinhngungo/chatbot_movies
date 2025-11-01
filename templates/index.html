@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>🎬 Chatbot Phim</title>
+  <style>
+    body {font-family: Arial, sans-serif; background: #f2f6fa; text-align: center; margin: 0;}
+    h1 {color: #0078d4; margin-top: 40px;}
+    input {width: 80%; max-width: 600px; padding: 10px; border: 2px solid #0078d4; border-radius: 8px;}
+    button {margin-top: 10px; padding: 8px 20px; border: none; background: #0078d4; color: white; border-radius: 6px; cursor: pointer;}
+    #chatbox {width: 80%; max-width: 600px; margin: 20px auto; text-align: left; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);}
+    .user {color: #0078d4;}
+    .bot {color: #333;}
+  </style>
+</head>
+<body>
+  <h1>🎬 Chatbot Phim</h1>
+  <div id="chatbox"></div>
+  <input id="userInput" placeholder="Hỏi về phim nào đó..." onkeydown="if(event.key==='Enter') askBot()">
+  <button onclick="askBot()">Gửi</button>
+
+  <script>
+    async function askBot() {
+      const input = document.getElementById("userInput");
+      const chatbox = document.getElementById("chatbox");
+      const question = input.value.trim();
+      if (!question) return;
+
+      chatbox.innerHTML += `<p class="user"><b>Bạn:</b> ${question}</p>`;
+      input.value = "";
+      chatbox.innerHTML += `<p class="bot">⏳ Đang trả lời...</p>`;
+
+      const res = await fetch("/ask", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({question})
+      });
+
+      const data = await res.json();
+      chatbox.innerHTML = chatbox.innerHTML.replace("⏳ Đang trả lời...", `<b>Bot:</b> ${data.answer}`);
+    }
+  </script>
+</body>
+</html>
